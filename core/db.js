@@ -9,7 +9,7 @@ exports.executeSQl =  function(sql,callback){
         //after it is connected to database server
         var req = new sqlDb.Request(conn);
         req.query(sql).then(function(recordSet){ 
-            console.log("Qury success");
+            console.log("Query success");
             callback(recordSet);
         }).catch(function(err){
             console.log("Error:- "+err);
