@@ -37,7 +37,7 @@ exports.sendEmailVerification = function(req,resp,reqBody){
                     query = query+"'"+req_data.Subscription+"')";
                     console.log(query);
 
-                    db.executeSQl(query,function(insert_query,err){
+                    db.executeSQl(query,function(insert_data,err){
                         if(err){
                             resp.writeHead(200,{"Content-Type":"application/json"});
                             resp.write(JSON.stringify({
