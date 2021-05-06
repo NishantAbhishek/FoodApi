@@ -1,4 +1,4 @@
-exports.port = 9000;
+exports.port = 47474;
 exports.dbConfig = {
     user: "sa",
     password : "Password123@jkl#",
