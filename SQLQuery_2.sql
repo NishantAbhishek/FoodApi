@@ -61,9 +61,10 @@ SELECT * FROM UserTable WHERE Verified = 1 and Email = 'Nishant2548@gmail.com' a
 
 UPDATE UserTable Set Subscription = 1 WHERE Email = 'Satu@gmail.com' and VerificationCode  = '1242';
 
-DELETE UserTable WHERE UserId = 2;
+DELETE UserBooking WHERE UserId = 2 and BookingId = 1;
 
 SELECT * FROM UserTable WHERE Email = 'nishant2548@gmail.com'
+
 
 
 --Inserting into RestaurantDetail
@@ -79,12 +80,17 @@ INSERT INTO RestaurantDetail(Name,Rating,Lat,Lang,Pricy,ImageUrl,RestaurantType,
 
 Select * FROM RestaurantDetail;
 
---Inserting into UserBooking
-INSERT INTO UserBooking(Userid,RestauruntId,NumberOfTable,DateBooked,TimeBooked) VALUES
-(5,3,5,'28/05/2003/','3:30 AM'),
-(5,2,5,'29/05/2003/','3:30 AM'),
-(5,1,5,'30/05/2003/','3:30 AM');
+Select * From RestaurantDetail WHERE RestaurantId = 5;
 
+--Inserting into UserBooking
+INSERT INTO UserBooking(Userid,RestauruntId,NumberOfTable,DateBooked,TimeBooked,BookingType) VALUES
+(5,3,5,'28/05/2003/','3:30 AM','Tunnel'),
+(5,2,5,'29/05/2003/','3:30 AM','Tunnel'),
+(5,1,5,'30/05/2003/','3:30 AM','Delivery');
+
+ALTER TABLE UserBooking ADD BookingType VARCHAR(255);
+
+TRUNCATE TABLE UserBooking
 
 --Getting UserBooking User and Restaurant Detail
 SELECT * FROM UserBooking WHERE Userid = 5;
@@ -94,10 +100,13 @@ SELECT NAME ,Rating, ImageUrl, RestaurantType FROM RestaurantDetail WHERE Restau
 
 
 
+
 SELECT * FROM UserBooking;
 
 
 SELECT * FROM RestaurantDetail ORDER BY Name;
+SELECT * FROM RestaurantDetail WHERE Name LIKE '%ap%' 
+
 SELECT * FROM UserTable;
 
 SELECT * FROM RestaurantDetail ORDER BY Name OFFSET 2 ROW
@@ -108,7 +117,7 @@ SELECT * FROM RestaurantDetail ORDER BY Name OFFSET 4 ROWS FETCH NEXT 6 ROWS ONL
 SELECT * FROM RestaurantDetail WHERE Rating = 3 or Rating = 4 or Rating = 5  ORDER BY Rating DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
 
 
-SELECT * FROM RestaurantDetail WHERE Rating = 3 or Rating = 4 or Rating = 5  ORDER BY Rating DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+SELECT * FROM RestaurantDetail WHERE Pricy = 'High' ORDER BY Rating DESC OFFSET 2 ROWS FETCH NEXT 10 ROWS ONLY;
 
 
 

@@ -56,12 +56,12 @@ app.post('/user/login',(req,resp)=>{
     req.on("data",function(data){
         reqBody+=data;
         //req.query
-        console.log(reqBody);
         if(reqBody.length>1e7){
             //todo requst too large
         }
     });
     req.on("end",function(){
+        console.log(reqBody);
         login.checkEmailPassword(req,resp,reqBody);
     });
 });
@@ -83,30 +83,54 @@ app.post("/user/upload",function(req,resp,next){
 
 })
 
+
 // app.listen(5000,()=>{
 //     console.log("5000");
 // });
 
-app.post('/user/bookings',verifyToken,(req,resp)=>{
-    jwt.verify(req.token,'secretkey',(err,authData)=>{
-        console.log(req.token);
-        if(err){
-            message.failure200(req,resp,"Wrong Auth","");
-        }else{
-            console.log(authData.user);
-            book.getBookedRestaurant(req,resp,authData.user);
-        }
-    });
+// app.post('/user/auth/bookings',verifyToken,(req,resp)=>{
+//     jwt.verify(req.token,'secretkey',(err,authData)=>{
+//         console.log(req.token);
+//         if(err){
+//             message.failure200(req,resp,"Wrong Auth","");
+//         }else{
+//             console.log(authData.user);
+//             book.getBookedRestaurant(req,resp,authData.user);
+//         }
+//     }); 
+// });
+
+
+app.post('/user/bookings',(req,resp)=>{
+    console.log("All Data");
+    var userId = req.query.userId;
+    book.getBookedRestaurant(req,resp,userId);
 });
 
 
 
+app.use(function(req,res,next){
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-app.post('/user/getRestaurant',(req,resp)=>{
+    if ('OPTIONS' === req.method) {
+        res.send(200);
+    }else {
+        next();
+    }
+    
+});
+
+
+app.post('/user/auth/bookRestaurant',verifyToken,(req,resp)=>{
     jwt.verify(req.token,'secretkey',(err,authData)=>{
         if(err){
+            console.log("Wrong auth")
             message.failure200(req,resp,"Wrong Auth","");
         }else{
+            console.log("Right auth");
+            var reqBody = ''; 
             req.on("data",function(data){
                 reqBody+=data;
                 console.log(reqBody);
@@ -123,6 +147,27 @@ app.post('/user/getRestaurant',(req,resp)=>{
             });
         }
     });
+});
+
+app.post('/user/bookRestaurant',(req,resp)=>{
+    var reqBody = '';
+    req.on("data",function(data){
+        reqBody+=data;
+        console.log(reqBody);
+        //req.query
+        if(reqBody.length>1e7){
+            //todo requst too large
+        }
+    });
+    req.on("end",function(){
+        book.BookRestaurant(req,resp,reqBody);
+    });
+});
+
+app.delete('/user/deleteBooked',(req,resp)=>{
+    var userId = req.query.userId;
+    var bookingId = req.query.bookingId;
+    book.RemoveBooking(req,resp,userId,bookingId);
 });
 
 app.get('/api',(req,resp)=>{
@@ -195,6 +240,12 @@ app.post('/restaurant/topRated',(req,resp)=>{
     restaurant.getTopRated(req,resp,page,limit);
 });
 
+app.post('/restaurant/restaurantId',(req,resp)=>{
+    var id = req.query.id;
+    restaurant.getRestaurantWithId(req,resp,id);
+});
+
+
 app.post('/restaurant/lowPrice',(req,resp)=>{
     var page = req.query.page;
     var limit = req.query.limit;
@@ -207,3 +258,7 @@ app.post('/restaurant/highPrice',(req,resp)=>{
     restaurant.getHighPriceRestaurant(req,resp,page,limit);
 });
 
+app.post('/restaurant/search',(req,resp)=>{
+    var value = req.query.value;
+    restaurant.searchRestraunt(req,resp,value);
+});

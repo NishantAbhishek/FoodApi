@@ -33,6 +33,18 @@ exports.getTopRated = function(req,resp,page,limit){
     });
 }
 
+exports.getRestaurantWithId = function(req,resp,id){
+    var query = "Select * From RestaurantDetail WHERE RestaurantId = "+id;
+    console.log(query);
+    db.executeSQl(query,function(data,err){
+        if(!err){
+            message.success200(req,resp,"Success",data.recordset);
+        }else{
+            message.success200(req,resp,"Failure","Sorry");
+        }
+    });
+}
+
 exports.getLowPriceRestaurant = function(req,resp,page,limit){
     var offset = page * limit;
     var next = limit;
@@ -64,8 +76,17 @@ exports.getHighPriceRestaurant = function(req,resp,page,limit){
         }else{
             message.success200(req,resp,"Failure","Sorry");
         }
-    });
-    
+    });   
 }
 
-
+exports.searchRestraunt = function(req,resp,value){
+    var query = "SELECT * FROM RestaurantDetail WHERE Name LIKE '%"+value+"%'"+"or RestaurantType LIKE '%"+value+"%'";
+    console.log(query);
+    db.executeSQl(query,function(data,err){
+        if(!err){
+            message.success200(req,resp,"Success",data.recordset);
+        }else{
+            message.success200(req,resp,"Failure","Sorry");
+        }
+    });
+}
