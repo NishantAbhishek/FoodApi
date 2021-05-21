@@ -1,0 +1,56 @@
+POST http://localhost:47474/restaurant/getRestaurant?page=0&limit=6
+###
+GET http://localhost:3000/posts
+###
+POST http://localhost:47474/user/login HTTP/1.1
+content-type: application/json
+
+{
+    "Email" : "nishant2548@gmail.com",
+    "Password" : "malamani"
+}
+
+###
+POST http://localhost:47474/user/bookRestaurant HTTP/1.1
+Content-Type: application/json
+
+{
+    "UserId":5,
+    "RestaurantId":1,
+    "NumberOfTable":5,
+    "DateBooked":"15/4/2020",
+    "TimeBooked":"2:40",
+    "BookingType":"Tunnel"
+}
+
+###
+POST http://localhost:47474/user/bookings?userId=5 HTTP/1.1
+
+###
+POST http://localhost:47474/user/auth/bookings HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7IlVzZXJJZCI6NSwiRmlyc3ROYW1lIjoiU2hpdmFtIiwiTGFzdE5hbWUiOiJLdW1hciIsIkVtYWlsIjoibmlzaGFudDI1NDhAZ21haWwuY29tIiwiVmVyaWZpZWQiOnRydWUsIlN1YnNjcmlwdGlvbiI6IkJhc2ljIiwiUGFzc3dvcmQiOiJtYWxhbWFuaSIsIlZlcmlmaWNhdGlvbkNvZGUiOiI1MTE5IiwiSW1hZ2VVcmwiOm51bGx9LCJpYXQiOjE2MjEwNjA4NDB9.-pQfR1LLOL1kcYhPP6GQD0YM_LYpsvECGA6bF_47t6Q
+
+Content-Type: application/json
+
+{
+    "RestaurantId":1,
+    "NumberOfTable":5,
+    "DateBooked":"12/4/2020",
+    "TimeBooked":"2:40",
+    "BookingType":"Tunnel"
+}
+###
+POST http://localhost:47474/user/bookings?userId=5  HTTP/1.1
+
+###
+DELETE http://localhost:47474/user/deleteBooked?userId=5&bookingId=7
+
+###
+POST  http://localhost:47474/restaurant/search?value=ap
+
+###
+POST http://localhost:47474/profile/updateProfile?name=Tempu&userId=1&imageUrl=http://localhost:47474/profileImages/userId3.png
+
+
+###
+POST http://localhost:47474/profile/getUserInfo?name=Temp_&userId=3

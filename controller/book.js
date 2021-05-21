@@ -1,22 +1,25 @@
 var db = require("../core/db");
 var message = require("../message")
 
-exports.BookRestaurant = function(req,resp,reqBody,userBody){
+exports.BookRestaurant = function(req,resp,reqBody){
     try{
         if(!reqBody){
             throw new Error("Input Not Valid");
         }
         var req_data = JSON.parse(reqBody);
-        var Userid = userBody.UserId;
-        var RestauruntId = reqBody.RestaurantId;
-        var NumberOfTable = reqBody.NumberOfTable;
-        var DateBooked = reqBody.DateBooked;
-        var TimeBooked = reqBody.TimeBooked;
+        var Userid = req_data.UserId;
+        var RestaurantId = req_data.RestaurantId;
+        var NumberOfTable = req_data.NumberOfTable;
+        var DateBooked = req_data.DateBooked;
+        var TimeBooked = req_data.TimeBooked;
+        var BookingType = req_data.BookingType;
 
-        var bookQuery = "INSERT INTO UserBooking(Userid,RestauruntId,NumberOfTable,DateBooked,TimeBooked) VALUES";
-        bookQuery = bookQuery + "('"+Userid+"'"+ "'"+RestauruntId+"'"+ "'"+NumberOfTable+"'" +"'"+DateBooked+"'" +"'"+TimeBooked+"')";
-
+        var bookQuery = "INSERT INTO UserBooking(Userid,RestauruntId,NumberOfTable,DateBooked,TimeBooked,BookingType) VALUES";
+        bookQuery = bookQuery + "('"+Userid+"',"+ "'"+RestaurantId+"',"+ "'"+NumberOfTable+"'," +"'"+DateBooked+"'," +"'"+TimeBooked+"',"+"'"+BookingType+"')";
         console.log(bookQuery);
+
+        //console.log(bookQuery);
+
         db.executeSQl(bookQuery,function(data,err){
             if(!err){
                 message.success200(req,resp,"Success Booking","");
@@ -30,14 +33,25 @@ exports.BookRestaurant = function(req,resp,reqBody,userBody){
     }
 }
 
-exports.getBookedRestaurant = function(req,resp,userBody){
+
+exports.RemoveBooking = function(req,resp,userId,bookingId){
+    var query = "DELETE UserBooking WHERE UserId = "+userId+" and BookingId = "+bookingId;
+    db.executeSQl(query,(response,err)=>{
+        if(err){
+            message.failure200(req,resp,"Failure","");
+        }else{
+            message.success200(req,resp,"Success","");
+        }
+    });
+}
+
+exports.getBookedRestaurant = function(req,resp,userId){
     try{
-        if(!userBody){
+        if(userId==-1){
             throw new Error("Input Not Valid");
         }
 
-        var Userid = userBody.UserId;
-        var getBookedQuery = "SELECT * FROM UserBooking WHERE UserId = " + Userid;
+        var getBookedQuery = "SELECT * FROM UserBooking WHERE UserId = " + userId;
         console.log(getBookedQuery);
         db.executeSQl(getBookedQuery,function(bookedRestaurant,err){
             if(!err){
@@ -64,7 +78,7 @@ exports.getBookedRestaurant = function(req,resp,userBody){
                                     NumberOfTable :bookedRestaurant.recordset[i].NumberOfTable,
                                     DateBooked :bookedRestaurant.recordset[i].DateBooked,
                                     TimeBooked :bookedRestaurant.recordset[i].TimeBooked,
-
+                                    BookingType:bookedRestaurant.recordset[i].BookingType,
                                     RestaurantName :restaurant.recordset[i].NAME,
                                     Rating : restaurant.recordset[i].Rating,
                                     ImageUrl :restaurant.recordset[i].ImageUrl,

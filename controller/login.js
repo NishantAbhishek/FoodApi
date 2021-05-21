@@ -26,7 +26,8 @@ exports.checkEmailPassword = function(req,resp,reqBody){
                                 Status: "Success",
                                 Message: "Login Success",
                                 auth:token,
-                                Name: verify_data.recordset[0].FirstName+ " "+verify_data.recordset[0].LastName,                                
+                                Name: verify_data.recordset[0].FirstName+ " "+verify_data.recordset[0].LastName,
+                                UserId:verify_data.recordset[0].UserId                            
                             }));      
                             resp.end(); 
                         }else{
