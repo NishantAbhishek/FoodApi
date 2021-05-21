@@ -9,7 +9,9 @@ const message = require("../FoodApi/message");
 const book = require("../FoodApi/controller/book");
 const fileupload = require('express-fileupload');
 const restaurant = require("../FoodApi/controller/restaurant");
-
+const Stream = require("stream");
+const fs = require("fs");
+const profile = require("../FoodApi/controller/profile");
 app.use(fileupload());
 
 app.listen(settings.port,()=>{
@@ -51,6 +53,19 @@ app.post('/user/authenticate',(req,resp)=>{
 
 });
 
+app.post("/profile/updateProfile",(req,resp)=>{
+    var name = req.query.name;
+    var userId = req.query.userId;
+    var imageUrl = req.query.imageUrl;
+    profile.UpdateProfile(req,resp,name,userId,imageUrl);
+});
+
+app.post("/profile/getUserInfo",(req,resp)=>{
+    var userId = req.query.userId;
+    profile.GetUserInfo(req,resp,userId);
+});
+
+
 app.post('/user/login',(req,resp)=>{
     var reqBody = '';
     req.on("data",function(data){
@@ -66,22 +81,31 @@ app.post('/user/login',(req,resp)=>{
     });
 });
 
-app.post("/user/upload",function(req,resp,next){
+app.use("/profileImages",express.static('./profileImages'));
+
+app.post("/user/profilePic",function(req,resp,next){
     console.log(req.files);
     const file = req.files.photo;
-    file.mv("./uploads/"+file.name,function(err){
+    const fileName = req.query.fileName;
+    file.mv("./profileImages/"+fileName,function(err){
         if(err){
             throw err;
         }else{
             resp.send({
-                success: true,
-                message: "File Upload!"
+                StatusCode: 200,
+                Status: "Success",
+                Message:"File Uploaded"
             });
         }
 
     });
+});
 
-})
+
+app.get('/image',(req,resp)=>{
+    console.log("--");
+    resp.sendFile(__dirname,'/image')
+});
 
 
 // app.listen(5000,()=>{
@@ -245,7 +269,6 @@ app.post('/restaurant/restaurantId',(req,resp)=>{
     restaurant.getRestaurantWithId(req,resp,id);
 });
 
-
 app.post('/restaurant/lowPrice',(req,resp)=>{
     var page = req.query.page;
     var limit = req.query.limit;
@@ -262,3 +285,6 @@ app.post('/restaurant/search',(req,resp)=>{
     var value = req.query.value;
     restaurant.searchRestraunt(req,resp,value);
 });
+
+
+

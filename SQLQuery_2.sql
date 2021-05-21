@@ -82,6 +82,8 @@ Select * FROM RestaurantDetail;
 
 Select * From RestaurantDetail WHERE RestaurantId = 5;
 
+SELECT * FROM UserTable WHERE UserId = 3;
+
 --Inserting into UserBooking
 INSERT INTO UserBooking(Userid,RestauruntId,NumberOfTable,DateBooked,TimeBooked,BookingType) VALUES
 (5,3,5,'28/05/2003/','3:30 AM','Tunnel'),
@@ -105,7 +107,7 @@ SELECT * FROM UserBooking;
 
 
 SELECT * FROM RestaurantDetail ORDER BY Name;
-SELECT * FROM RestaurantDetail WHERE Name LIKE '%ap%' 
+SELECT * FROM RestaurantDetail WHERE Name LIKE '%oo%' or RestaurantType LIKE '%pi%'
 
 SELECT * FROM UserTable;
 
@@ -116,6 +118,7 @@ SELECT * FROM RestaurantDetail ORDER BY Name OFFSET 4 ROWS FETCH NEXT 6 ROWS ONL
 
 SELECT * FROM RestaurantDetail WHERE Rating = 3 or Rating = 4 or Rating = 5  ORDER BY Rating DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
 
+UPDATE UserTable  SET FirstName = 'Shivam Ji' , ImageUrl = 'http://localhost:47474/profileImages/userId3.png' WHERE Userid = 3
 
 SELECT * FROM RestaurantDetail WHERE Pricy = 'High' ORDER BY Rating DESC OFFSET 2 ROWS FETCH NEXT 10 ROWS ONLY;
 

@@ -47,3 +47,10 @@ DELETE http://localhost:47474/user/deleteBooked?userId=5&bookingId=7
 
 ###
 POST  http://localhost:47474/restaurant/search?value=ap
+
+###
+POST http://localhost:47474/profile/updateProfile?name=Tempu&userId=1&imageUrl=http://localhost:47474/profileImages/userId3.png
+
+
+###
+POST http://localhost:47474/profile/getUserInfo?name=Temp_&userId=3
